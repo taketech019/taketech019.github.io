@@ -1,10 +1,11 @@
 ---
 tags:
+publish:
+작성일:
 ---
 >[!info] Overview
 >abstract
 >
->**Platform:** Quartz
 >
 >**First upload date:** 2025-12-15
 ---

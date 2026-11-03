@@ -155,7 +155,7 @@ rasterio 라이브러리를 활용하여 핸들링했습니다.
 이중 청송군 소재 복지센터 및 경로당 232곳을 후보지로 하였고
 
 googlemaps 라이브러리를 활용하여 '소재지' column을 위경도 좌표로 변환하였습니다.
-*(자세한 방법은 [[Projects/DSJA 3기/Folium 라이브러리로 경북 산사태 대피소 GIS 분석하기#^googlemaps-api\|api활용코드]]를 확인하세요)*
+*(자세한 방법은 [[Folium 라이브러리로 경북 산사태 대피소 GIS 분석하기#^googlemaps-api\|api활용코드]]를 확인하세요)*
 
 ### 재배치 결과
 

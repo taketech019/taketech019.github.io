@@ -2,8 +2,8 @@
 tags:
   - 그로스해킹
   - 마케팅
-summary:
 작성일: 2026-08-30
+publish: true
 ---
 ## I. 들어가며
 

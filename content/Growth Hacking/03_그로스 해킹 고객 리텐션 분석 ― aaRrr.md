@@ -1,7 +1,11 @@
 ---
-tags: 
-summary: 
-작성일:
+tags:
+  - 그로스해킹
+  - 데이터분석
+  - 데이터시각화
+  - Tableau
+작성일: 2026-09-06
+publish: true
 ---
 ## I. 들어가며
 
