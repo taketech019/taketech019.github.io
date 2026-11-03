@@ -12,3 +12,5 @@ replit.nix
 .quartz/
 quartz/cli/tui/dist/
 .turbo/
+content/_Private/
+content/_Inbox/Notion Backup Codes.md
