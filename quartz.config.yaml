@@ -14,9 +14,9 @@ configuration:
   ignorePatterns:
     - private
     - .obsidian
-    - Inbox
-    - Utillities/templates
-    - _Inbox/Notion Backup Codes.md
+    - _Inbox
+    # attatchments images must stay; only hide the notes so the folder disappears
+    - Utillities/**/*.md
   theme:
     # Pretendard/IBM Plex Mono are loaded via <link> tags in quartz/components/Head.tsx
     fontOrigin: local
