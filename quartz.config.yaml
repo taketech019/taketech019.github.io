@@ -27,25 +27,26 @@ configuration:
       code: IBM Plex Mono
     colors:
       lightMode:
-        light: "#FAFAF9"
-        lightgray: "#E7E5E4"
-        gray: "#A8A29E"
-        darkgray: "#292524"
-        dark: "#1C1917"
-        secondary: "#0D9488"
-        tertiary: "#0F766E"
-        highlight: rgba(13, 148, 136, 0.1)
-        textHighlight: "#0D948866"
+        light: "#EBDCC4"
+        lightgray: "#DCCBAE"
+        gray: "#4F5A48"
+        darkgray: "#2A4534"
+        dark: "#1F3D2B"
+        secondary: "#5B4965"
+        tertiary: "#45364E"
+        highlight: rgba(91, 73, 101, 0.1)
+        textHighlight: rgba(91, 73, 101, 0.22)
+      # no dark mode: same tokens so a saved dark preference changes nothing
       darkMode:
-        light: "#0C0A09"
-        lightgray: "#292524"
-        gray: "#78716C"
-        darkgray: "#D6D3D1"
-        dark: "#FAFAF9"
-        secondary: "#2DD4BF"
-        tertiary: "#5EEAD4"
-        highlight: rgba(45, 212, 191, 0.1)
-        textHighlight: "#2DD4BF66"
+        light: "#EBDCC4"
+        lightgray: "#DCCBAE"
+        gray: "#4F5A48"
+        darkgray: "#2A4534"
+        dark: "#1F3D2B"
+        secondary: "#5B4965"
+        tertiary: "#45364E"
+        highlight: rgba(91, 73, 101, 0.1)
+        textHighlight: rgba(91, 73, 101, 0.22)
 plugins:
   - source: "@quartz-community/created-modified-date"
     enabled: true
@@ -217,7 +218,7 @@ plugins:
       position: left
       priority: 10
   - source: "@quartz-community/darkmode"
-    enabled: true
+    enabled: false
     layout:
       position: left
       priority: 30

@@ -6,13 +6,151 @@
 // @import here, since @import must precede every other rule in the
 // compiled output and Sass requires @use to come first in the source.
 
+// "Garden Plot" design system — see README.md#디자인-시스템--garden-plot.
+// :root carries the Sand sheet tokens (quartz.config.yaml theme.colors);
+// the Forest Green frame (sidebars, footer) flips them with this mixin.
+$forest: #1f3d2b;
+$forest-raised: #2e5039;
+$sand: #ebdcc4;
+$sand-bright: #f5ecdd;
+$purple: #5b4965;
+
+// Quartz resolves its derived variables (--text-normal, --nav-item-*, ...)
+// once at :root, so a scoped override must re-declare them to take effect.
+@mixin derived-tokens {
+  --background-primary: var(--light);
+  --background-primary-alt: var(--light);
+  --background-secondary: var(--lightgray);
+  --background-secondary-alt: var(--lightgray);
+  --background-modifier-border: var(--lightgray);
+  --background-modifier-border-hover: var(--gray);
+  --background-modifier-border-focus: var(--secondary);
+  --text-normal: var(--darkgray);
+  --text-muted: var(--gray);
+  --text-faint: var(--gray);
+  --text-accent: var(--secondary);
+  --text-accent-hover: var(--tertiary);
+  --interactive-normal: var(--light);
+  --interactive-hover: var(--lightgray);
+  --nav-item-color: var(--darkgray);
+  --nav-item-color-hover: var(--dark);
+  --nav-item-color-active: var(--secondary);
+  --nav-item-background-hover: var(--lightgray);
+  --nav-item-background-active: var(--highlight);
+  --tag-background: var(--highlight);
+  --tag-color: var(--secondary);
+  --icon-color: var(--darkgray);
+  --icon-color-hover: var(--dark);
+  --divider-color: var(--lightgray);
+  --link-color: var(--secondary);
+  --link-color-hover: var(--tertiary);
+}
+
+@mixin frame-tokens {
+  --light: #{$forest};
+  --lightgray: #{$forest-raised};
+  --gray: #b4bba2;
+  --darkgray: #{$sand};
+  --dark: #{$sand-bright};
+  --secondary: #{$sand};
+  --tertiary: #{$sand-bright};
+  --highlight: rgba(235, 220, 196, 0.08);
+  @include derived-tokens;
+}
+
+@mixin sheet-tokens {
+  --light: #{$sand};
+  --lightgray: #dccbae;
+  --gray: #4f5a48;
+  --darkgray: #2a4534;
+  --dark: #{$forest};
+  --secondary: #{$purple};
+  --tertiary: #45364e;
+  --highlight: rgba(91, 73, 101, 0.1);
+  @include derived-tokens;
+}
+
 /* ------------------------------------------------------------------ */
-/* Minimal Data Docs — typography                                      */
+/* Frame and sheet                                                     */
 /* ------------------------------------------------------------------ */
 body {
+  background-color: $forest;
   line-height: 1.75; // Korean body copy reads more comfortably with extra leading
 }
 
+#quartz-body {
+  & > .sidebar,
+  & > footer {
+    @include frame-tokens;
+    color: var(--darkgray);
+  }
+
+  & > .center {
+    background-color: var(--light);
+    border-radius: 16px;
+    padding: 0 3rem 2.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    box-sizing: border-box;
+
+    @media all and ($mobile) {
+      border-radius: 12px;
+      padding: 0 1.25rem 2rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    // Quartz's 6rem top spacing is meant for a bare page; inside the sheet it reads as a gap.
+    & > .page-header {
+      margin-top: 2.5rem;
+    }
+  }
+
+  & > footer {
+    opacity: 1;
+    padding-bottom: 2rem;
+  }
+}
+
+// The search modal and the graph live inside the green sidebars but show
+// page content, so they go back to the sheet surface.
+.search > .search-container,
+.graph > .graph-outer,
+.graph > .global-graph-outer {
+  @include sheet-tokens;
+  color: var(--darkgray);
+}
+
+.graph > .graph-outer {
+  background-color: var(--light);
+  border: none;
+  border-radius: 10px;
+}
+
+.graph > .global-graph-outer > .global-graph-container {
+  background-color: var(--light);
+}
+
+// Search input on green: raised field instead of an outline.
+.sidebar .search > .search-button {
+  background-color: var(--lightgray);
+  border: none;
+  color: var(--darkgray);
+}
+
+// Current page in the explorer: the frame's only purple.
+.sidebar .explorer a.active {
+  background-color: $purple;
+  color: $sand;
+  border-radius: 4px;
+  padding: 0 0.4rem;
+  margin-left: -0.4rem;
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------------ */
+/* Typography                                                          */
+/* ------------------------------------------------------------------ */
 article {
   p,
   li {
@@ -28,22 +166,30 @@ h5,
 h6 {
   font-weight: 700;
   letter-spacing: -0.01em;
+  color: var(--dark);
+}
+
+.page-title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: rgba(91, 73, 101, 0.3);
+  color: inherit;
 }
 
 /* ------------------------------------------------------------------ */
-/* Callouts — soften into a card rather than a flat outlined box        */
+/* Callouts and code                                                   */
 /* ------------------------------------------------------------------ */
 .callout {
-  border-radius: 10px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
 }
 
-/* ------------------------------------------------------------------ */
-/* Code blocks                                                         */
-/* ------------------------------------------------------------------ */
 pre {
-  border-radius: 10px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  border-color: var(--lightgray);
+  background-color: color-mix(in srgb, var(--lightgray) 45%, var(--light));
 }
 
 code {
@@ -57,24 +203,4 @@ code {
 figure[data-rehype-pretty-code-figure]:has(> pre > code[data-language="dataview"]),
 pre:has(> code[data-language="dataview"]) {
   display: none;
-}
-
-/* ------------------------------------------------------------------ */
-/* Sidebar dividers — give the layout a docs-shell structure            */
-/* ------------------------------------------------------------------ */
-.sidebar.left {
-  border-right: 1px solid var(--lightgray);
-}
-
-.sidebar.right {
-  border-left: 1px solid var(--lightgray);
-}
-
-@media all and (max-width: 800px) {
-  .sidebar.left,
-  .sidebar.right {
-    border-right: none;
-    border-left: none;
-    border-bottom: 1px solid var(--lightgray);
-  }
 }
