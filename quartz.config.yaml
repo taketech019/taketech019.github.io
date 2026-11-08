@@ -27,22 +27,22 @@ configuration:
       code: IBM Plex Mono
     colors:
       lightMode:
-        light: "#F8F5FA"
-        lightgray: "#E5DDE9"
-        gray: "#6E6076"
-        darkgray: "#43344B"
-        dark: "#2F2037"
+        light: "#FAF6EF"
+        lightgray: "#E6DED1"
+        gray: "#635B67"
+        darkgray: "#3F3842"
+        dark: "#27222A"
         secondary: "#28623F"
         tertiary: "#19482C"
         highlight: rgba(40, 98, 63, 0.09)
         textHighlight: "#EBDCC4"
       # no dark mode: same tokens so a saved dark preference changes nothing
       darkMode:
-        light: "#F8F5FA"
-        lightgray: "#E5DDE9"
-        gray: "#6E6076"
-        darkgray: "#43344B"
-        dark: "#2F2037"
+        light: "#FAF6EF"
+        lightgray: "#E6DED1"
+        gray: "#635B67"
+        darkgray: "#3F3842"
+        dark: "#27222A"
         secondary: "#28623F"
         tertiary: "#19482C"
         highlight: rgba(40, 98, 63, 0.09)
