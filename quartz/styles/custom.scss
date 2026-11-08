@@ -6,69 +6,136 @@
 // @import here, since @import must precede every other rule in the
 // compiled output and Sass requires @use to come first in the source.
 
-// "Garden Plot" design system — see README.md#디자인-시스템--garden-plot.
-// Text tokens live in quartz.config.yaml (theme.colors) and read on both
-// surfaces; this file only adds the tones that are surfaces or accents.
-$forest: #1f3d2b; // G900
-$sage: #d5e6dc; // G100 — frame
-$sage-raised: #c3dacc; // G150 — fields and boxes on the frame
-$paper: #faf6ef; // S50 — sheet
-$sand: #ebdcc4; // S200
-$sand-code: #f2eade;
-$earth: #6f552a; // S800
-$purple: #5b4965; // P700
-$purple-tint: #ece6ef; // P100
+// Design system — see README.md#디자인-시스템--obsidian-plum.
+// :root carries the sheet tokens (quartz.config.yaml theme.colors); the plum
+// frame (sidebars, footer) flips them with frame-tokens below.
+$plum: #382c3f; // P900 — frame
+$plum-raised: #4d3e56; // P800 — fields on the frame
+$plum-mid: #725483; // P500 — note callouts
+$lavender: #e5dbeb; // P100 — text on the frame
+$lavender-bright: #f6f1f8; // P50
+$paper: #f8f5fa; // sheet
+$code-bg: #f1ecf3;
+$green: #28623f; // G600 — accent on the sheet
+$mint: #90cba8; // G300 — accent on the frame
+$sand: #ebdcc4;
+$earth: #6f552a;
+
+// Quartz resolves its derived variables (--text-normal, --nav-item-*, ...)
+// once at :root, so a scoped override must re-declare them to take effect.
+@mixin derived-tokens {
+  --background-primary: var(--light);
+  --background-secondary: var(--lightgray);
+  --background-modifier-border: var(--lightgray);
+  --text-normal: var(--darkgray);
+  --text-muted: var(--gray);
+  --text-faint: var(--gray);
+  --text-accent: var(--secondary);
+  --text-accent-hover: var(--tertiary);
+  --interactive-normal: var(--light);
+  --interactive-hover: var(--lightgray);
+  --nav-item-color: var(--darkgray);
+  --nav-item-color-hover: var(--dark);
+  --nav-item-color-active: var(--secondary);
+  --nav-item-background-hover: var(--lightgray);
+  --nav-item-background-active: var(--highlight);
+  --icon-color: var(--darkgray);
+  --icon-color-hover: var(--dark);
+  --divider-color: var(--lightgray);
+  --link-color: var(--secondary);
+  --link-color-hover: var(--tertiary);
+}
+
+@mixin frame-tokens {
+  --light: #{$plum};
+  --lightgray: #{$plum-raised};
+  --gray: #b1a2b9;
+  --darkgray: #{$lavender};
+  --dark: #{$lavender-bright};
+  // links on the frame stay lavender; mint is kept for hover and the current page
+  --secondary: #{$lavender-bright};
+  --tertiary: #{$mint};
+  --highlight: rgba(255, 255, 255, 0.06);
+  @include derived-tokens;
+  color: var(--darkgray);
+}
 
 /* ------------------------------------------------------------------ */
 /* Frame and sheet                                                     */
 /* ------------------------------------------------------------------ */
 body {
-  background-color: $sage;
+  background-color: $plum;
   line-height: 1.75; // Korean body copy reads more comfortably with extra leading
 }
 
-#quartz-body > .center {
-  background-color: $paper;
-  border-radius: 14px;
-  padding: 0 3rem 2.5rem;
-  margin: 2rem 0;
-  box-sizing: border-box;
-
-  @media all and ($mobile) {
-    border-radius: 12px;
-    padding: 0 1.25rem 2rem;
-    margin: 1rem 0;
+#quartz-body {
+  & > .sidebar,
+  & > footer {
+    @include frame-tokens;
   }
 
-  // Quartz's 6rem top spacing is meant for a bare page; inside the sheet it reads as a gap.
-  & > .page-header {
-    margin-top: 2.5rem;
+  // On mobile the left sidebar becomes a sticky bar with its own background.
+  & > .sidebar {
+    background-color: $plum;
+  }
+
+  & > .center {
+    background-color: $paper;
+    border-radius: 14px;
+    padding: 0 3rem 2.5rem;
+    margin: 2rem 0;
+    box-sizing: border-box;
+
+    @media all and ($mobile) {
+      border-radius: 12px;
+      padding: 0 1.25rem 2rem;
+      margin: 1rem 0;
+    }
+
+    // Quartz's 6rem top spacing is meant for a bare page; inside the sheet it reads as a gap.
+    & > .page-header {
+      margin-top: 2.5rem;
+    }
   }
 }
 
-// On mobile the left sidebar becomes a sticky bar with its own background.
-#quartz-body > .sidebar {
-  background-color: $sage;
-}
-
-.sidebar .search > .search-button {
-  background-color: $sage-raised;
-  border: none;
+// The search modal and the graph live in the sidebars but show page
+// content, so they go back to the sheet tokens.
+.sidebar .search > .search-container,
+.sidebar .graph > .graph-outer,
+.sidebar .graph > .global-graph-outer {
+  --light: #{$paper};
+  --lightgray: #e5dde9;
+  --gray: #6e6076;
+  --darkgray: #43344b;
+  --dark: #2f2037;
+  --secondary: #{$green};
+  --tertiary: #19482c;
+  --highlight: rgba(40, 98, 63, 0.09);
+  @include derived-tokens;
   color: var(--darkgray);
 }
 
-.graph > .graph-outer {
+.sidebar .graph > .graph-outer {
   background-color: $paper;
   border: none;
   border-radius: 10px;
 }
 
-.sidebar .explorer a.active {
-  background-color: $purple-tint;
-  color: $purple;
-  border-radius: 4px;
-  padding: 0 0.4rem;
-  margin-left: -0.4rem;
+.sidebar .search > .search-button {
+  background-color: $plum-raised;
+  border: none;
+  color: $lavender;
+}
+
+// Current page in the explorer: the frame's green point.
+// :not(.collapsed): on mobile the closed panel sits off-screen but its edge still peeks in.
+.sidebar .explorer:not(.collapsed) a.active {
+  display: block;
+  background-color: $mint;
+  color: $plum;
+  border-radius: 6px;
+  padding: 0.15rem 0.5rem;
   opacity: 1;
 }
 
@@ -90,20 +157,16 @@ h5,
 h6 {
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: $forest;
+  color: var(--dark);
 }
 
 .page-title {
   font-weight: 800;
   letter-spacing: -0.02em;
-
-  & a {
-    color: $forest;
-  }
 }
 
 ::selection {
-  background: rgba(91, 73, 101, 0.22);
+  background: rgba(40, 98, 63, 0.2);
   color: inherit;
 }
 
@@ -113,7 +176,7 @@ h6 {
 pre {
   border-radius: 8px;
   border-color: var(--lightgray);
-  background-color: $sand-code;
+  background-color: $code-bg;
 }
 
 code {
@@ -121,24 +184,24 @@ code {
 }
 
 table th {
-  background-color: $sand-code;
+  background-color: $code-bg;
 }
 
 .callout {
   border-radius: 8px;
 
   &[data-callout] {
-    --color: #{$purple};
-    --border: #{rgba($purple, 0.28)};
-    --bg: #{rgba($purple, 0.06)};
+    --color: #{$plum-mid};
+    --border: #{rgba($plum-mid, 0.3)};
+    --bg: #{rgba($plum-mid, 0.06)};
   }
 
   &[data-callout="tip"],
   &[data-callout="success"],
   &[data-callout="question"] {
-    --color: #{$forest};
-    --border: #{rgba($forest, 0.25)};
-    --bg: #{rgba($forest, 0.05)};
+    --color: #{$green};
+    --border: #{rgba($green, 0.28)};
+    --bg: #{rgba($green, 0.06)};
   }
 
   &[data-callout="warning"],
@@ -147,7 +210,7 @@ table th {
   &[data-callout="bug"] {
     --color: #{$earth};
     --border: #{rgba($earth, 0.3)};
-    --bg: #{rgba($sand, 0.45)};
+    --bg: #{rgba($sand, 0.4)};
   }
 }
 
