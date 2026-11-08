@@ -46,6 +46,11 @@ body {
   }
 }
 
+// On mobile the left sidebar becomes a sticky bar with its own background.
+#quartz-body > .sidebar {
+  background-color: $sage;
+}
+
 .sidebar .search > .search-button {
   background-color: $sage-raised;
   border: none;
