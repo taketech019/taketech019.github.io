@@ -1,0 +1,10 @@
+views:
+  - type: table
+    name: View
+    filters:
+      and:
+        - '!file.folder.containsAny("_Private", "Utillities", "_Inbox")'
+        - '!file.name.containsAny("index", "robots.txt")'
+    sort:
+      - property: 작성일
+        direction: DESC

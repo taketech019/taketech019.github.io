@@ -6,85 +6,13 @@
 // @import here, since @import must precede every other rule in the
 // compiled output and Sass requires @use to come first in the source.
 
-// Design system — see README.md#디자인-시스템--sand-desk.
-// Text tokens live in quartz.config.yaml (theme.colors) and read on both
-// sand and paper, so this file only adds surfaces and accents.
-$sand: #ebdcc4; // S200 — frame
-$sand-raised: #ddceb6; // S300 — fields on the frame
-$paper: #faf6ef; // S50 — sheet
-$code-bg: #f3ede2; // S100
-$earth: #6f552a; // S800
-$ink: #3f3842; // P700, desaturated purple
-$ink-note: #6f5f77; // P500
-$green: #28623f; // G600 — accent
-
 /* ------------------------------------------------------------------ */
-/* Frame and sheet                                                     */
+/* Minimal Data Docs — typography                                      */
 /* ------------------------------------------------------------------ */
 body {
-  background-color: $sand;
   line-height: 1.75; // Korean body copy reads more comfortably with extra leading
 }
 
-#quartz-body {
-  // On mobile the left sidebar becomes a sticky bar with its own background.
-  & > .sidebar {
-    background-color: $sand;
-  }
-
-  // Navigation links stay ink; green is kept for hover and the current page.
-  & > .sidebar,
-  & > footer {
-    --secondary: #{$ink};
-    --tertiary: #{$green};
-  }
-
-  & > .center {
-    background-color: $paper;
-    border-radius: 14px;
-    padding: 0 3rem 2.5rem;
-    margin: 2rem 0;
-    box-sizing: border-box;
-
-    @media all and ($mobile) {
-      border-radius: 12px;
-      padding: 0 1.25rem 2rem;
-      margin: 1rem 0;
-    }
-
-    // Quartz's 6rem top spacing is meant for a bare page; inside the sheet it reads as a gap.
-    & > .page-header {
-      margin-top: 2.5rem;
-    }
-  }
-}
-
-.sidebar .search > .search-button {
-  background-color: $sand-raised;
-  border: none;
-  color: $ink;
-}
-
-.sidebar .graph > .graph-outer {
-  background-color: $paper;
-  border: none;
-  border-radius: 10px;
-}
-
-// Current page in the explorer: the green point.
-// :not(.collapsed): on mobile the closed panel sits off-screen but its edge still peeks in.
-.sidebar .explorer:not(.collapsed) a.active {
-  display: block;
-  background-color: $green;
-  color: $paper;
-  border-radius: 6px;
-  padding: 0.15rem 0.5rem;
-  opacity: 1;
-}
-
-/* ------------------------------------------------------------------ */
-/* Typography                                                          */
-/* ------------------------------------------------------------------ */
 article {
   p,
   li {
@@ -100,65 +28,111 @@ h5,
 h6 {
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--dark);
 }
 
-.page-title {
-  font-weight: 800;
-  letter-spacing: -0.02em;
+/* ------------------------------------------------------------------ */
+/* Callouts — soften into a card rather than a flat outlined box        */
+/* ------------------------------------------------------------------ */
+.callout {
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 
-  & a {
-    color: var(--dark);
+  // Data Garden palette: green = default, purple = discussion, sand/red = caution
+  &[data-callout],
+  &[data-callout="abstract"],
+  &[data-callout="info"],
+  &[data-callout="todo"] {
+    --color: #1f3d2b;
+    --border: #1f3d2b44;
+    --bg: #1f3d2b14;
+  }
+
+  &[data-callout="tip"],
+  &[data-callout="success"] {
+    --color: #2f5d42;
+    --border: #2f5d4244;
+    --bg: #2f5d4214;
+  }
+
+  &[data-callout="question"],
+  &[data-callout="example"],
+  &[data-callout="quote"] {
+    --color: #5b4965;
+    --border: #5b496544;
+    --bg: #5b496514;
+  }
+
+  &[data-callout="warning"] {
+    --color: #9a7a3e;
+    --border: #9a7a3e44;
+    --bg: #9a7a3e14;
+  }
+
+  &[data-callout="failure"],
+  &[data-callout="danger"],
+  &[data-callout="bug"] {
+    --color: #9b4a3f;
+    --border: #9b4a3f44;
+    --bg: #9b4a3f14;
   }
 }
 
-::selection {
-  background: rgba(40, 98, 63, 0.2);
-  color: inherit;
+/* ------------------------------------------------------------------ */
+/* Tags — purple pills                                                 */
+/* ------------------------------------------------------------------ */
+a.internal.tag-link {
+  background-color: var(--tertiary);
+  color: var(--light);
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+
+  &:hover {
+    color: var(--light);
+    opacity: 0.85;
+  }
 }
 
 /* ------------------------------------------------------------------ */
-/* Code, tables, callouts                                              */
+/* Blockquote, tables, rules, selection                                */
+/* ------------------------------------------------------------------ */
+blockquote {
+  border-left-color: var(--tertiary);
+  background-color: var(--highlight);
+  border-radius: 0 8px 8px 0;
+  padding: 0.5rem 1rem;
+}
+
+thead {
+  background-color: var(--lightgray);
+}
+
+th {
+  border-bottom-color: var(--secondary);
+}
+
+hr {
+  background-color: var(--lightgray);
+}
+
+::selection {
+  background: var(--textHighlight);
+}
+
+/* ------------------------------------------------------------------ */
+/* Code blocks                                                         */
 /* ------------------------------------------------------------------ */
 pre {
-  border-radius: 8px;
-  border-color: var(--lightgray);
-  background-color: $code-bg;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 code {
   border-radius: 4px;
 }
 
-table th {
-  background-color: $code-bg;
-}
-
-.callout {
-  border-radius: 8px;
-
-  &[data-callout] {
-    --color: #{$ink-note};
-    --border: #{rgba($ink-note, 0.3)};
-    --bg: #{rgba($ink-note, 0.06)};
-  }
-
-  &[data-callout="tip"],
-  &[data-callout="success"],
-  &[data-callout="question"] {
-    --color: #{$green};
-    --border: #{rgba($green, 0.28)};
-    --bg: #{rgba($green, 0.06)};
-  }
-
-  &[data-callout="warning"],
-  &[data-callout="failure"],
-  &[data-callout="danger"],
-  &[data-callout="bug"] {
-    --color: #{$earth};
-    --border: #{rgba($earth, 0.3)};
-    --bg: #{rgba($sand, 0.5)};
-  }
+:not(pre) > code {
+  background-color: var(--lightgray);
+  color: var(--dark);
 }
 
 /* ------------------------------------------------------------------ */
@@ -168,4 +142,24 @@ table th {
 figure[data-rehype-pretty-code-figure]:has(> pre > code[data-language="dataview"]),
 pre:has(> code[data-language="dataview"]) {
   display: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Sidebar dividers — give the layout a docs-shell structure            */
+/* ------------------------------------------------------------------ */
+.sidebar.left {
+  border-right: 1px solid var(--lightgray);
+}
+
+.sidebar.right {
+  border-left: 1px solid var(--lightgray);
+}
+
+@media all and (max-width: 800px) {
+  .sidebar.left,
+  .sidebar.right {
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid var(--lightgray);
+  }
 }
